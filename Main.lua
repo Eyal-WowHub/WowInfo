@@ -4,29 +4,29 @@ local Tooltip = LibStub("Tooltip-1.0")
 
 local Colorizer = addon.Colorizer
 
-local ADDON_LOAD_FAILED = "<< %s >> " .. ADDON_LOAD_FAILED
+do
+    local ADDON_LOAD_FAILED = ADDON_LOAD_FAILED:gsub("%%s:", "'%%s':")
 
-local function TryLoadAddOn(name)
-    local loaded, reason = C_AddOns.LoadAddOn(name)
-    if not loaded and reason then
-        local _, title = C_AddOns.GetAddOnInfo(addon:GetName())
-        title = NORMAL_FONT_COLOR:WrapTextInColorCode(title)
-        local state = RED_FONT_COLOR:WrapTextInColorCode(_G["ADDON_" .. reason])
-        print(YELLOW_FONT_COLOR:WrapTextInColorCode(ADDON_LOAD_FAILED:format(title, name, state)))
-        return false
+    local function TryLoadAddOn(addonName)
+        local loaded, reason = C_AddOns.LoadAddOn(addonName)
+        if not loaded and reason then
+            local state = RED_FONT_COLOR:WrapTextInColorCode(_G["ADDON_" .. reason])
+            WowInfo:Warn(ADDON_LOAD_FAILED:format(addonName, state))
+            return false
+        end
+        return true
     end
-    return true
-end
 
-function addon:OnInitialized()
-    self.DB = LibStub("AceDB-3.0"):New("WowInfoDB", {}, true)
+    function addon:OnInitialized()
+        self.DB = LibStub("AceDB-3.0"):New("WowInfoDB", {}, true)
 
-    SLASH_WOWINFO1 = "/wowinfo"
-    SLASH_WOWINFO2 = "/wowi"
-    SLASH_WOWINFO3 = "/wi"
-    SlashCmdList["WOWINFO"] = function(input)
-        if TryLoadAddOn("WowInfo_Options") then
-            WowInfo:TriggerEvent("WOWINFO_OPTIONS_OPENED")
+        SLASH_WOWINFO1 = "/wowinfo"
+        SLASH_WOWINFO2 = "/wowi"
+        SLASH_WOWINFO3 = "/wi"
+        SlashCmdList["WOWINFO"] = function(input)
+            if TryLoadAddOn("WowInfo_Options") then
+                WowInfo:TriggerEvent("WOWINFO_OPTIONS_OPENED")
+            end
         end
     end
 end
