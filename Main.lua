@@ -1,6 +1,6 @@
 local addon = LibStub("Addon-1.0"):New(...)
 
-local Tooltip = LibStub("Tooltip-1.0")
+local Tooltip = LibStub("TooltipBuilder-1.0")
 
 local Colorizer = addon.Colorizer
 
