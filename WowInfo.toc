@@ -17,10 +17,10 @@ Libs\CallbackHandler-1.0\CallbackHandler-1.0.lua
 Libs\LibDataBroker-1.1\LibDataBroker-1.1.lua
 Libs\AceDB-3.0\AceDB-3.0.xml
 
-Libs\Toolkit\Contracts.lua
-Libs\Toolkit\Addon.lua
-Libs\Toolkit\CharacterInfo.lua
-Libs\Toolkit\Tooltip.lua
+Libs\Contracts\Contracts.lua
+Libs\Addon\Addon.lua
+Libs\CharacterInfo\CharacterInfo.lua
+Libs\TooltipBuilder\TooltipBuilder.lua
 
 Core\Constants.lua
 Core\Colorizer.lua

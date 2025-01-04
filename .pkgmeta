@@ -7,23 +7,23 @@ externals:
   Libs/CallbackHandler-1.0: https://repos.curseforge.com/wow/callbackhandler/trunk
   Libs/LibDataBroker-1.1: https://repos.curseforge.com/wow/libdatabroker-1-1
   Libs/AceDB-3.0: https://repos.curseforge.com/wow/ace3/trunk/AceDB-3.0
+  Libs/Contracts: https://github.com/eyal-wow-addons/Contracts
+  Libs/Addon: https://github.com/eyal-wow-addons/Addon
+  Libs/CharacterInfo: https://github.com/eyal-wow-addons/CharacterInfo
+  Libs/TooltipBuilder: https://github.com/eyal-wow-addons/TooltipBuilder
+  Libs/SettingsGenerator: https://github.com/eyal-wow-addons/SettingsGenerator
   AddOns/WowInfo_Options: https://github.com/eyal-wow-addons/WowInfo_Options
-  AddOns/WowLibs: https://github.com/eyal-wow-addons/WowLibs
 
 ignore:
   - Libs/LibStub.lua
   - Libs/**/LibStub/*
   - Libs/**/*.toc
   - Libs/**/*.textile
-  - AddOns/WowLibs/*.tga
-  - AddOns/WowLibs/*.toc
-  - AddOns/**/Tests/*
   - Screenshots/*
   - Testing/*
   - README.md
 
 move-folders:
   WowInfo/Libs/CallbackHandler-1.0/CallbackHandler-1.0: WowInfo/Libs/CallbackHandler-1.0
-  WowInfo/AddOns/WowLibs/Libs/Toolkit: WowInfo/Libs/Toolkit
   WowInfo/AddOns/WowInfo_Options: WowInfo_Options
-  WowInfo/AddOns/WowLibs/Libs/AceOptions: WowInfo_Options/Libs/AceOptions
+  WowInfo/Libs/SettingsGenerator: WowInfo_Options/Libs/SettingsGenerator
