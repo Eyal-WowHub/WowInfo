@@ -33,7 +33,7 @@ Core\TooltipManager.lua
 
 Storage\CurrencyTracker.lua
 Storage\Friends.lua
-Storage\Guild.lua
+Storage\GuildFriends.lua
 Storage\Money.lua
 Storage\Reputation.lua
 
@@ -45,7 +45,7 @@ DataAPI\Delves.lua
 DataAPI\Durability.lua
 DataAPI\Experience.lua
 DataAPI\Friends.lua
-DataAPI\Guild.lua
+DataAPI\GuildFriends.lua
 DataAPI\Money.lua
 DataAPI\MonthlyActivities.lua
 DataAPI\Professions.lua

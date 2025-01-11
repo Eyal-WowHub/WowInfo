@@ -1,5 +1,5 @@
 local _, addon = ...
-local Guild = addon:GetObject("Guild")
+local GuildFriends = addon:GetObject("GuildFriends")
 local Tooltip = addon:NewTooltip("GuildFriends", "Friends")
 
 local L = addon.L
@@ -12,12 +12,12 @@ Tooltip.target = {
         if numTotalGuildMembers > 0 then
             Tooltip:AddFormattedHeader(L["X Members Y Online"], numTotalGuildMembers, numOnlineGuildMembers)
     
-            local totalOnlineGuildFriends = Guild:GetTotalOnlineFriends()
+            local totalOnlineGuildFriends = GuildFriends:GetTotalOnlineFriends()
     
             if totalOnlineGuildFriends > 0 then
                 Tooltip:AddFormattedHeader(L["Guild Friends (X):"], totalOnlineGuildFriends)
     
-                for friend in Guild:IterableOnlineFriendsInfo() do
+                for friend in GuildFriends:IterableOnlineFriendsInfo() do
                     local charName = Tooltip:GetFormattedCharName(friend)
                     charName = Tooltip:GetFormattedStatus(friend, charName)
     

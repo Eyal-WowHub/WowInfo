@@ -1,5 +1,5 @@
 local _, addon = ...
-local Storage, DB = addon:NewStorage("Guild")
+local Storage, DB = addon:NewStorage("GuildFriends")
 
 local defaults = {
     profile = {

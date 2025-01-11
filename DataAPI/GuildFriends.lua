@@ -1,6 +1,6 @@
 local _, addon = ...
 local Friends = addon:GetObject("Friends")
-local Guild = addon:NewObject("Guild")
+local GuildFriends = addon:NewObject("GuildFriends")
 
 local INFO = {}
 
@@ -63,10 +63,10 @@ local function CacheGuildFriendsInfo()
         CACHE[i] = nil
     end
 
-    Guild.__updateCache = false
+    GuildFriends.__updateCache = false
 end
 
-Guild:RegisterEvents(
+GuildFriends:RegisterEvents(
     "PLAYER_LOGIN",
     "FRIENDLIST_UPDATE",
     "GUILD_ROSTER_UPDATE",
@@ -80,7 +80,7 @@ Guild:RegisterEvents(
         end
     end)
 
-function Guild:IterableGuildFriendsInfo(index)
+function GuildFriends:IterableGuildFriendsInfo(index)
     if self.__updateCache then
         CacheGuildFriendsInfo()
     end
@@ -120,7 +120,7 @@ function Guild:IterableGuildFriendsInfo(index)
     end
 end
 
-function Guild:GetTotalOnlineFriends()
+function GuildFriends:GetTotalOnlineFriends()
     local onlineGuildFriendsCounter = 0
     local onlineGuildFriendsMobileCounter = 0
     for _, friend in self:IterableGuildFriendsInfo() do
@@ -133,7 +133,7 @@ function Guild:GetTotalOnlineFriends()
     return onlineGuildFriendsCounter, onlineGuildFriendsMobileCounter
 end
 
-function Guild:IterableOnlineFriendsInfo()
+function GuildFriends:IterableOnlineFriendsInfo()
     local maxOnlineGuildFriends = self.storage:GetMaxOnlineFriends()
     local onlineGuildFriendsCounter = 0
     local i = 0
