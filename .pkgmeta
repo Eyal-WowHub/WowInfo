@@ -11,7 +11,7 @@ externals:
   Libs/Addon: https://github.com/Eyal-WowHub/Addon
   Libs/CharacterInfo: https://github.com/Eyal-WowHub/CharacterInfo
   Libs/TooltipBuilder: https://github.com/Eyal-WowHub/TooltipBuilder
-  Libs/SettingsGenerator: https://github.com/Eyal-WowHub/SettingsGenerator
+  Libs/AddonConfig: https://github.com/Eyal-WowHub/AddonConfig
   AddOns/WowInfo_Options: https://github.com/Eyal-WowHub/WowInfo_Options
 
 ignore:
@@ -26,4 +26,4 @@ ignore:
 move-folders:
   WowInfo/Libs/CallbackHandler-1.0/CallbackHandler-1.0: WowInfo/Libs/CallbackHandler-1.0
   WowInfo/AddOns/WowInfo_Options: WowInfo_Options
-  WowInfo/Libs/SettingsGenerator: WowInfo_Options/Libs/SettingsGenerator
+  WowInfo/Libs/AddonConfig: WowInfo_Options/Libs/AddonConfig
