@@ -184,11 +184,14 @@ function Quests:IterableCampaignChaptersInfo()
             currentChapterID = C_CampaignInfo.GetCurrentChapterID(campaignID)
         end
         i = i + 1
-        if i <= n then
+        while i <= n do
             local chapterID = chapterIDs[i]
             local chapterInfo = C_CampaignInfo.GetCampaignChapterInfo(chapterID)
-            local isCompleted = C_QuestLine.IsComplete(chapterID)
-            return chapterInfo.name, chapterID == currentChapterID, isCompleted
+            if chapterInfo and chapterInfo.name then
+                local isCompleted = C_QuestLine.IsComplete(chapterID)
+                return chapterInfo.name, chapterID == currentChapterID, isCompleted
+            end
+            i = i + 1
         end
     end
 end
