@@ -80,7 +80,7 @@ PvP:RegisterEvents(
         elseif eventName == "PLAYER_SPECIALIZATION_CHANGED" then
             RequestRatedInfo()
         elseif eventName == "PVP_TYPES_ENABLED" then
-            local _, ratedBgs, ratedArenas, ratedSoloShuffle, ratedBGBlitz = ...;
+            local _, ratedBgs, ratedArenas, ratedSoloShuffle, ratedBGBlitz = ...
             local isRatedPvPDisabled = not ratedBgs and not ratedArenas and not ratedSoloShuffle and not ratedBGBlitz 
             DATA.SeasonState = GetRatedPvPSeasonState(isRatedPvPDisabled)
         end        

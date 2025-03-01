@@ -48,7 +48,7 @@ local function CacheWeeklyRewardProgressInfo(type)
 
             if activityInfo.type == Enum.WeeklyRewardChestThresholdType.Raid then
                 if activityInfo.raidString then
-                    thresholdString = activityInfo.raidString;
+                    thresholdString = activityInfo.raidString
                 else
                     thresholdString = WEEKLY_REWARDS_THRESHOLD_RAID
                 end
