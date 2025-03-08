@@ -21,50 +21,68 @@ local GREAT_VAULT_ORDER_MAP = {
     Enum.WeeklyRewardChestThresholdType.World
 }
 
-local function GetActivityInfo(type)
-    local activityInfo
-    local minThreshold
-    for _, currentActivityInfo in ipairs(C_WeeklyRewards.GetActivities(type)) do
-        activityInfo = currentActivityInfo
-        activityInfo.minThreshold = minThreshold or currentActivityInfo.threshold
-        if currentActivityInfo.progress <= currentActivityInfo.threshold then
+local function GetUnlockedActivityInfo(activityType)
+    local prevActivityInfo = nil
+    for _, activityInfo in ipairs(C_WeeklyRewards.GetActivities(activityType)) do
+        prevActivityInfo = prevActivityInfo or activityInfo
+        if activityInfo.progress < activityInfo.threshold then
             break
         end
-        minThreshold = currentActivityInfo.threshold
+        prevActivityInfo = activityInfo
     end
-    return activityInfo
+    return prevActivityInfo
 end
 
-local function CacheWeeklyRewardProgressInfo(type)
-    if CACHE[type] then
-        local activityInfo = GetActivityInfo(type)
+local function IsCompletedAtHeroicLevel(activityTierID)
+	local difficultyID = C_WeeklyRewards.GetDifficultyIDForActivityTier(activityTierID);
+	return difficultyID == DifficultyUtil.ID.DungeonHeroic;
+end
 
-        CACHE[type].thresholdString = nil
-        CACHE[type].progress = nil
-        CACHE[type].index = nil
+local function CacheWeeklyRewardProgressInfo(activityType)
+    if not CACHE[activityType] then return end
 
-        if activityInfo then
-            local thresholdString
+    CACHE[activityType].header = nil
+    CACHE[activityType].levelString = nil
+    CACHE[activityType].progress = nil
+    CACHE[activityType].index = nil
 
-            if activityInfo.type == Enum.WeeklyRewardChestThresholdType.Raid then
-                if activityInfo.raidString then
-                    thresholdString = activityInfo.raidString
-                else
-                    thresholdString = WEEKLY_REWARDS_THRESHOLD_RAID
-                end
-            elseif activityInfo.type == Enum.WeeklyRewardChestThresholdType.Activities then
-                thresholdString = WEEKLY_REWARDS_THRESHOLD_DUNGEONS
-            elseif activityInfo.type == Enum.WeeklyRewardChestThresholdType.RankedPvP then
-                thresholdString = WEEKLY_REWARDS_THRESHOLD_PVP
-            elseif activityInfo.type == Enum.WeeklyRewardChestThresholdType.World then
-                thresholdString = WEEKLY_REWARDS_THRESHOLD_WORLD
-            end
+    local activityInfo = GetUnlockedActivityInfo(activityType)
+    if not activityInfo then return end
 
-            if thresholdString then
-                CACHE[type].header = thresholdString:format(activityInfo.threshold)
-                CACHE[type].progress = activityInfo.progress
-                CACHE[type].index = activityInfo.index and activityInfo.progress >= activityInfo.minThreshold and activityInfo.index or 0
-            end
+    local thresholdString, levelString
+    
+    local itemLevel = 0
+    local itemLink = C_WeeklyRewards.GetExampleRewardItemHyperlinks(activityInfo.id)
+
+    if itemLink then
+		itemLevel = C_Item.GetDetailedItemLevelInfo(itemLink) or 0
+	end
+
+    if activityInfo.type == Enum.WeeklyRewardChestThresholdType.Raid then
+        thresholdString = activityInfo.raidString or WEEKLY_REWARDS_THRESHOLD_RAID
+        levelString = DifficultyUtil.GetDifficultyName(activityInfo.level)
+    elseif activityInfo.type == Enum.WeeklyRewardChestThresholdType.Activities then
+        thresholdString = WEEKLY_REWARDS_THRESHOLD_DUNGEONS
+        if IsCompletedAtHeroicLevel(activityInfo.activityTierID) then
+            levelString = WEEKLY_REWARDS_HEROIC
+        else
+            levelString = WEEKLY_REWARDS_MYTHIC:format(activityInfo.level)
+        end
+    elseif activityInfo.type == Enum.WeeklyRewardChestThresholdType.RankedPvP then
+        thresholdString = WEEKLY_REWARDS_THRESHOLD_PVP
+        levelString = PVPUtil.GetTierName(activityInfo.level)
+    elseif activityInfo.type == Enum.WeeklyRewardChestThresholdType.World then
+        thresholdString = WEEKLY_REWARDS_THRESHOLD_WORLD
+        levelString = GREAT_VAULT_WORLD_TIER:format(activityInfo.level)
+    end
+
+    if thresholdString then
+        CACHE[activityType].header = thresholdString:format(activityInfo.threshold)
+        CACHE[activityType].levelString = levelString
+        CACHE[activityType].progress = activityInfo.progress
+        CACHE[activityType].index = activityInfo.progress >= activityInfo.threshold and activityInfo.index or 0
+        if not CACHE[activityType].itemLevel or itemLevel > CACHE[activityType].itemLevel then
+            CACHE[activityType].itemLevel = itemLevel
         end
     end
 end
@@ -79,13 +97,15 @@ WeeklyRewards:RegisterEvents(
         CacheWeeklyRewardProgressInfo(Enum.WeeklyRewardChestThresholdType.World)
     end)
 
-function WeeklyRewards:GetProgressInfo(type)
-    local data = CACHE[type]
+function WeeklyRewards:GetProgressInfo(activityType)
+    local data = CACHE[activityType]
     if data then
-        INFO[type].header = data.header
-        INFO[type].progress = data.progress
-        INFO[type].index = data.index
-        return INFO[type]
+        INFO[activityType].header = data.header
+        INFO[activityType].levelString = data.levelString
+        INFO[activityType].progress = data.progress
+        INFO[activityType].index = data.index
+        INFO[activityType].itemLevel = data.itemLevel
+        return INFO[activityType]
     end
 end
 
@@ -95,8 +115,8 @@ function WeeklyRewards:IterableGreatVaultInfo()
     return function()
         i = i + 1
         if i <= n then
-            local type = GREAT_VAULT_ORDER_MAP[i]
-            return self:GetProgressInfo(type)
+            local activityType = GREAT_VAULT_ORDER_MAP[i]
+            return self:GetProgressInfo(activityType)
         end
     end
 end
