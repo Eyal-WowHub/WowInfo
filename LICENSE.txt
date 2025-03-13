@@ -1,6 +1,6 @@
 Custom License for WowInfo:
 
-    Copyright (c) 2024 Eyal Alon
+    Copyright (c) 2025 Eyal Alon
 
     The codebase and associated resources (the "AddOn")
         excluding third-party content is copyrighted
@@ -10,14 +10,11 @@ Custom License for WowInfo:
 
         1. You may use the AddOn free of charge.
 
-        2. You may copy and modify the AddOn for personal use.
+        2. You may fork and host the AddOn on github.com, copy and modify the AddOn for personal use.
 
-        3. You may participate in the development of the AddOn,
-            therefor, contributors, may fork and host the AddOn on github.com.
+        3. You may not change the name of the AddOn.
 
-        4. You may not change the name of the AddOn.
-
-        5. You may not publish, distribute and/or sell copies of the AddOn.
+        4. You may not publish, distribute and/or sell copies of the AddOn.
 
     All rights not explicitly mentioned in this license is reserved to the author.
 
