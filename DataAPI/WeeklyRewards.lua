@@ -9,6 +9,7 @@ local INFO = {
 }
 
 local CACHE = {
+    [1337] = {},
     [Enum.WeeklyRewardChestThresholdType.Raid] = {},
     [Enum.WeeklyRewardChestThresholdType.Activities] = {},
     [Enum.WeeklyRewardChestThresholdType.RankedPvP] = {},
@@ -89,8 +90,17 @@ end
 
 WeeklyRewards:RegisterEvents(
     "PLAYER_LOGIN", 
-    "WEEKLY_REWARDS_UPDATE", 
-    function(_, eventName)
+    "WEEKLY_REWARDS_UPDATE",
+    "GET_ITEM_INFO_RECEIVED",
+    function(_, eventName, ...)
+        if eventName == "GET_ITEM_INFO_RECEIVED" then
+            local itemID = ...
+            if not itemID or itemID == 0 or CACHE[1337][itemID] then
+                return
+            else
+                CACHE[1337][itemID] = true
+            end
+        end
         CacheWeeklyRewardProgressInfo(Enum.WeeklyRewardChestThresholdType.Raid)
         CacheWeeklyRewardProgressInfo(Enum.WeeklyRewardChestThresholdType.Activities)
         CacheWeeklyRewardProgressInfo(Enum.WeeklyRewardChestThresholdType.RankedPvP)
