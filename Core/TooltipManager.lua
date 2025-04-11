@@ -3,7 +3,7 @@ local Storage, DB = addon:NewStorage("TooltipManager")
 
 local defaults = {
     profile = {
-        Disabled = {},
+        Enabled = {},
         Order = {
             ["CharacterMicroButton"] = {
                 "Currency",
@@ -53,16 +53,28 @@ local function IsObjectTooltip(object)
 end
 
 local function RegisterTooltip(tooltip)
+    local name = tooltip:GetName()
+
+    if DB.profile.Enabled[name] == nil then
+        DB.profile.Enabled[name] = true
+    end
+
     local target = tooltip.target
     local frame = target.button or target.frame
+
     if frame then
         if target.onEnter then
-            frame:HookScript("OnEnter", function(frame)
-                if frame.IsEnabled and not frame:IsEnabled() then
+            frame:HookScript("OnEnter", function(self)
+                if not DB.profile.Enabled[name] then
                     return
                 end
-            
-                if frame == AchievementMicroButton and addon.MicroMenu:SetButtonTooltip(frame, ACHIEVEMENT_BUTTON, "TOGGLEACHIEVEMENT") then
+
+                -- NOTE: This prevents the tooltip from showing up when the button is disabled.
+                if self.IsEnabled and not self:IsEnabled() then
+                    return
+                end
+
+                if self == AchievementMicroButton and addon.MicroMenu:SetButtonTooltip(self, ACHIEVEMENT_BUTTON, "TOGGLEACHIEVEMENT") then
                     return
                 end
 
@@ -74,8 +86,9 @@ local function RegisterTooltip(tooltip)
                 tooltip:Show()
             end)
         end
+
         if target.onLeave then
-            frame:HookScript("OnLeave", function(frame)
+            frame:HookScript("OnLeave", function(self)
                 tooltip:Hide()
                 target.onLeave()
             end)
@@ -83,21 +96,31 @@ local function RegisterTooltip(tooltip)
     elseif target.funcName then
         if target.table then
             hooksecurefunc(target.table, target.funcName, function(...)
+                if not DB.profile.Enabled[name] then
+                    return
+                end
+
                 target.func(...)
                 tooltip:Show()
             end)
         else
             hooksecurefunc(target.funcName, function(...)
+                if not DB.profile.Enabled[name] then
+                    return
+                end
+
                 target.func(...)
                 tooltip:Show()
             end)
         end
     end
+
     tooltip.isTooltipRegistered = true
 end
 
 local function IterableTooltips()
-    local frameName, tooltips 
+    local frameName, tooltips
+
     return function()
         frameName, tooltips = next(DB.profile.Order, frameName)
         return frameName, tooltips
@@ -105,12 +128,14 @@ local function IterableTooltips()
 end
 
 local function RegisterTooltips()
-    for frameName, tooltips in IterableTooltips() do
-        for index, name in ipairs(tooltips) do
+    for _, tooltips in IterableTooltips() do
+        for _, name in ipairs(tooltips) do
             local tooltip = addon:GetTooltip(name)
+
             RegisterTooltip(tooltip)
         end
     end
+
     -- NOTE: Register tooltips that are fixed to a frame and don't appear in the `Order` table.
     for object in addon:IterableObjects() do
         if IsObjectTooltip(object) and not object.isTooltipRegistered then
@@ -125,15 +150,31 @@ function Storage:OnInitialized()
     RegisterTooltips()
 end
 
-function Storage:Disable(name)
-    DB.profile.Disabled[name] = true
+function Storage:IterableEnabledTooltips()
+    local i = 0
+    local sortedKeys = {}
+
+    for key in pairs(DB.profile.Enabled) do
+        table.insert(sortedKeys, key)
+    end
+
+    table.sort(sortedKeys)
+
+    return function()
+        i = i + 1
+        return sortedKeys[i]
+    end
 end
 
-function Storage:Enable(name)
-    DB.profile.Disabled[name] = false
+function Storage:ToggleTooltip(name)
+    if DB.profile.Enabled[name] then
+        DB.profile.Enabled[name] = false
+    else
+        DB.profile.Enabled[name] = true
+    end
 end
 
-function Storage:IsDisabled(name)
-    return DB.profile.Disabled[name] == true
+function Storage:IsEnabled(name)
+    return DB.profile.Enabled[name]
 end
 
