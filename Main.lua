@@ -25,7 +25,7 @@ do
         SLASH_WOWINFO3 = "/wi"
         SlashCmdList["WOWINFO"] = function(input)
             if TryLoadAddOn("WowInfo_Options") then
-                WowInfo:TriggerEvent("WOWINFO_OPTIONS_OPENED")
+                WowInfo:TriggerEvent("WOWINFO_OPTIONS_LOADED")
             end
         end
     end
