@@ -37,25 +37,25 @@ Storage\GuildFriends.lua
 Storage\Money.lua
 Storage\Reputation.lua
 
-DataAPI\Achievements.lua
-DataAPI\Collections.lua
-DataAPI\Currency.lua
-DataAPI\CurrencyTracker.lua
-DataAPI\Delves.lua
-DataAPI\Durability.lua
-DataAPI\Experience.lua
-DataAPI\Friends.lua
-DataAPI\GuildFriends.lua
-DataAPI\Money.lua
-DataAPI\MonthlyActivities.lua
-DataAPI\Professions.lua
-DataAPI\PvE.lua
-DataAPI\PvP.lua
-DataAPI\Quests.lua
-DataAPI\Reputation.lua
-DataAPI\Speedometer.lua
-DataAPI\Talents.lua
-DataAPI\WeeklyRewards.lua
+GameAPI\Achievements.lua
+GameAPI\Collections.lua
+GameAPI\Currency.lua
+GameAPI\CurrencyTracker.lua
+GameAPI\Delves.lua
+GameAPI\Durability.lua
+GameAPI\Experience.lua
+GameAPI\Friends.lua
+GameAPI\GuildFriends.lua
+GameAPI\Money.lua
+GameAPI\MonthlyActivities.lua
+GameAPI\Professions.lua
+GameAPI\PvE.lua
+GameAPI\PvP.lua
+GameAPI\Quests.lua
+GameAPI\Reputation.lua
+GameAPI\Speedometer.lua
+GameAPI\Talents.lua
+GameAPI\WeeklyRewards.lua
 
 Locales\enUS.lua
 
