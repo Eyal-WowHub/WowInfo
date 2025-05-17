@@ -33,6 +33,7 @@ local function GetCurrencyListEntryInfo(index)
         INFO.maxQuantity = entry.maxQuantity
         INFO.iconFileID = entry.iconFileID
         INFO.isAccountWide = entry.isAccountWide
+        INFO.currencyListDepth = entry.currencyListDepth
         return INFO
     end
 end
@@ -101,7 +102,7 @@ local function CacheCurrencyInfo()
             if link then
                 currencyID = C_CurrencyInfo.GetCurrencyIDFromLink(link)
             end
-        else
+        elseif currency.currencyListDepth == 0 then
             headerName = currency.name
         end
 
@@ -114,7 +115,8 @@ local function CacheCurrencyInfo()
         entry.maxQuantity = currency.maxQuantity
         entry.iconFileID = currency.iconFileID
         entry.isAccountWide = currency.isAccountWide
-        
+        entry.currencyListDepth = currency.currencyListDepth
+
         CACHE.size = i
 
         i = i + 1
