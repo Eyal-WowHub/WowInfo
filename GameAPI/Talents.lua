@@ -17,7 +17,6 @@ local function CacheLoadoutsInfo()
         local configID = configIDs[i]
         local data = CACHE.Traits[i]
         if configID then
-            local isActive = false
             local configInfo = C_Traits.GetConfigInfo(configID)
             
             if not data then
@@ -48,7 +47,6 @@ Talents:RegisterEvents(
     end)
 
 function Talents:GetCurrentSpec()
-    local _, classFilename = UnitClass("player")
     local specName
     local currentSpecID = PlayerUtil.GetCurrentSpecID()
 
