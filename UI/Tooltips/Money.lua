@@ -1,5 +1,3 @@
-if not MainMenuBarBackpackButton:IsVisible() then return end
-
 local _, addon = ...
 local Money = addon:GetObject("Money")
 local Tooltip = addon:NewTooltip("Money")
@@ -28,6 +26,8 @@ end
 Tooltip.target = {
     button = MainMenuBarBackpackButton,
     onEnter = function()
+        if not MainMenuBarBackpackButton:IsVisible() then return end
+
         Tooltip:AddHeader(L["Money:"])
     
         Tooltip:AddPlayerMoneyLine()
