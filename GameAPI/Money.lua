@@ -8,7 +8,7 @@ local SILVER_PER_GOLD = SILVER_PER_GOLD
 
 function Money:GetPlayerMoneyInfo()
     local charName, money = Money.storage:GetPlayerMoneyInfo()
-    return CharacterInfo:RemoveRealm(charName), GetMoneyString(money, true)
+    return CharacterInfo:RemoveRealm(charName), GetMoneyString(money, true, false, false, HIGHLIGHT_FONT_COLOR)
 end
 
 function Money:IterableCharactersMoneyInfo()
@@ -29,7 +29,7 @@ function Money:IterableCharactersMoneyInfo()
 
             if not CharacterInfo:IsSameCharacter(charName)
                 and (fraction > Money.storage:GetMinMoneyAmount() or Money.storage:CanShowAllCharacters()) then
-                return charDisplayName, GetMoneyString(money, true)
+                return charDisplayName, GetMoneyString(money, true, false, false, HIGHLIGHT_FONT_COLOR)
             end
 
             charName, money = Money.storage:GetCharacterMoneyInfo(charName)
@@ -48,5 +48,5 @@ function Money:GetTotalMoneyString()
         end
         charName, money = Money.storage:GetCharacterMoneyInfo(charName)
     end
-    return GetMoneyString(totalMoney, true)
+    return GetMoneyString(totalMoney, true, false, false, HIGHLIGHT_FONT_COLOR)
 end
