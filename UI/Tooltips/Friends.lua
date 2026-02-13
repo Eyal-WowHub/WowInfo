@@ -1,5 +1,3 @@
-if not QuickJoinToastButton:IsVisible() then return end
-
 local _, addon = ...
 local Friends = addon:GetObject("Friends")
 local Tooltip = addon:NewTooltip("Friends")
@@ -11,6 +9,8 @@ local BNET_CHAR_LINE_FORMAT = "%s (%s)"
 Tooltip.target = {
     button = QuickJoinToastButton,
     onEnter = function()
+        if not QuickJoinToastButton:IsVisible() then return end
+
         local _, numWoWOnline, _, numBNetOnline = Friends:GetNumOnlineFriendsInfo()
     
         if numWoWOnline > 0 then
