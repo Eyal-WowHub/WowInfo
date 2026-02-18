@@ -39,6 +39,7 @@ Storage\Reputation.lua
 
 GameAPI\Achievements.lua
 GameAPI\Collections.lua
+GameAPI\Communities.lua
 GameAPI\Currency.lua
 GameAPI\CurrencyTracker.lua
 GameAPI\Delves.lua
@@ -64,6 +65,7 @@ UI\Extensions\Friends.lua
 
 UI\Tooltips\Achievements.lua
 UI\Tooltips\Collections.lua
+UI\Tooltips\Communities.lua
 UI\Tooltips\Currency.lua
 UI\Tooltips\CurrencyTracker.lua
 UI\Tooltips\DailyReset.lua

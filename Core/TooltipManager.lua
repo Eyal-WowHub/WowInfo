@@ -24,7 +24,8 @@ local defaults = {
                 "Quests"
             },
             ["GuildMicroButton"] = {
-                "GuildFriends"
+                "GuildFriends",
+                "Communities"
             },
             ["LFDMicroButton"] = {
                 "PvE",
