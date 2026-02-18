@@ -28,6 +28,7 @@ local defaults = {
             },
             ["LFDMicroButton"] = {
                 "PvE",
+                "MythicPlus",
                 "Delves",
                 "PvP"
             },

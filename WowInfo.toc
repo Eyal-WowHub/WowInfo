@@ -48,6 +48,7 @@ GameAPI\Friends.lua
 GameAPI\GuildFriends.lua
 GameAPI\Money.lua
 GameAPI\MonthlyActivities.lua
+GameAPI\MythicPlus.lua
 GameAPI\Professions.lua
 GameAPI\PvE.lua
 GameAPI\PvP.lua
@@ -73,6 +74,7 @@ UI\Tooltips\GreatVaultProgress.lua
 UI\Tooltips\GuildFriends.lua
 UI\Tooltips\Money.lua
 UI\Tooltips\MonthlyActivities.lua
+UI\Tooltips\MythicPlus.lua
 UI\Tooltips\Professions.lua
 UI\Tooltips\PvE.lua
 UI\Tooltips\Delves.lua
