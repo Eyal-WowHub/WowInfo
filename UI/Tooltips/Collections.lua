@@ -30,6 +30,25 @@ Tooltip.target = {
             Tooltip
                 :AddFormattedHeader(L["Pets: X"], totalPets)
                 :AddAchievementLine(Achievements.GetPetsAchievementInfo)
+
+            local hasDead = Collections:HasDeadPets()
+            if hasDead then
+                Tooltip:AddLine(L["Dead Pets!"])
+            end
+
+            local pets = Collections:GetLoadedPetsInfo()
+            if pets then
+                for _, pet in ipairs(pets) do
+                    local healthText = L["X / Y HP"]:format(pet.health, pet.maxHealth)
+                    Tooltip:SetDoubleLine(pet.name, healthText)
+                    if pet.health == 0 then
+                        Tooltip:SetRedColor()
+                    elseif pet.health == pet.maxHealth then
+                        Tooltip:SetGreenColor()
+                    end
+                    Tooltip:ToLine()
+                end
+            end
         end
     
         local totalLearnedToys, totalToys = Collections:GetTotalToys()

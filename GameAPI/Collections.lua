@@ -5,6 +5,8 @@ local CACHE = {
     numCollectedMounts = 0
 }
 
+local NUM_BATTLE_PETS_IN_BATTLE = 3
+
 local function CacheNumMounts()
     local numMounts = C_MountJournal.GetNumMounts()
     if numMounts >= 1 then
@@ -51,4 +53,39 @@ function Collections:GetTotalToys()
         return learnedToys, numToys
     end
     return nil
+end
+
+function Collections:GetLoadedPetsInfo()
+    local pets
+    for slot = 1, NUM_BATTLE_PETS_IN_BATTLE do
+        local petID = C_PetJournal.GetPetLoadOutInfo(slot)
+        if petID then
+            local _, customName, _, _, _, _, _, name, icon = C_PetJournal.GetPetInfoByPetID(petID)
+            local health, maxHealth = C_PetJournal.GetPetStats(petID)
+            if health and maxHealth then
+                pets = pets or {}
+                pets[#pets + 1] = {
+                    name = (customName and customName ~= "") and customName or name,
+                    health = health,
+                    maxHealth = maxHealth,
+                    icon = icon
+                }
+            end
+        end
+    end
+    return pets
+end
+
+function Collections:HasDeadPets()
+    local pets = self:GetLoadedPetsInfo()
+    if not pets then
+        return false, 0
+    end
+    local deadCount = 0
+    for _, pet in ipairs(pets) do
+        if pet.health == 0 then
+            deadCount = deadCount + 1
+        end
+    end
+    return deadCount > 0, deadCount
 end
