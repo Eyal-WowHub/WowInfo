@@ -13,6 +13,11 @@ Tooltip.target = {
         if not C_MythicPlus.IsMythicPlusActive() then return end
 
         local score, scoreColor = MythicPlus:GetOverallScore()
+        local keystone = MythicPlus:GetKeystoneInfo()
+        local weeklyCount = MythicPlus:GetWeeklyRunCount()
+
+        -- Nothing to show: no score, no keystone, no runs this week
+        if not score and not keystone and weeklyCount == 0 then return end
 
         if score then
             scoreColor = scoreColor or HIGHLIGHT_FONT_COLOR
@@ -25,15 +30,11 @@ Tooltip.target = {
             Tooltip:AddHeader(L["Mythic+:"])
         end
 
-        local keystone = MythicPlus:GetKeystoneInfo()
-
         if keystone then
             Tooltip
                 :SetFormattedLine(KEYSTONE_FORMAT, keystone.name, keystone.level)
                 :ToLine()
         end
-
-        local weeklyCount = MythicPlus:GetWeeklyRunCount()
 
         if weeklyCount > 0 then
             Tooltip:AddFormattedLine(L["This Week: X Runs"], weeklyCount)
