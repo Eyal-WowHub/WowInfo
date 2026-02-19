@@ -66,8 +66,7 @@ function Collections:GetLoadedPetsInfo()
                 pets = pets or {}
                 pets[#pets + 1] = {
                     name = (customName and customName ~= "") and customName or name,
-                    health = health,
-                    maxHealth = maxHealth,
+                    healthPct = (maxHealth > 0) and (health / maxHealth) or 0,
                     icon = icon
                 }
             end
@@ -83,7 +82,7 @@ function Collections:HasDeadPets()
     end
     local deadCount = 0
     for _, pet in ipairs(pets) do
-        if pet.health == 0 then
+        if pet.healthPct == 0 then
             deadCount = deadCount + 1
         end
     end

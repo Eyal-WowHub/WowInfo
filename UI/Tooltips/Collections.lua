@@ -6,6 +6,7 @@ local Tooltip = addon:NewTooltip("Collections")
 local L = addon.L
 
 local ACHIEVEMENT_LINE_FORMAT = "- %s: |cffffffff%d|r / |cff20ff20%d|r"
+local PET_LINE_FORMAT = "|T%s:0|t %s"
 
 function Tooltip:AddAchievementLine(callback)
     local name, currAmount, reqAmount = callback()
@@ -38,13 +39,17 @@ Tooltip.target = {
 
             local pets = Collections:GetLoadedPetsInfo()
             if pets then
+                Tooltip:AddEmptyLine()
                 for _, pet in ipairs(pets) do
-                    local healthText = L["X / Y HP"]:format(pet.health, pet.maxHealth)
-                    Tooltip:SetDoubleLine(pet.name, healthText)
-                    if pet.health == 0 then
-                        Tooltip:SetRedColor()
-                    elseif pet.health == pet.maxHealth then
-                        Tooltip:SetGreenColor()
+                    Tooltip
+                        :SetFormattedLine(PET_LINE_FORMAT, pet.icon, pet.name)
+                        :Indent()
+                    if pet.healthPct == 0 then
+                        Tooltip:SetLine(DEAD):SetRedColor()
+                    elseif pet.healthPct == 1 then
+                        Tooltip:SetLine(FormatPercentage(pet.healthPct)):SetGreenColor()
+                    else
+                        Tooltip:SetLine(FormatPercentage(pet.healthPct))
                     end
                     Tooltip:ToLine()
                 end
