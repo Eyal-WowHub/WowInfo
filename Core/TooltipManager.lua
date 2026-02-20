@@ -1,6 +1,61 @@
 local _, addon = ...
 local Storage, DB = addon:NewStorage("TooltipManager")
 
+--[[ Tooltip Target Contract
+    Each tooltip must define a `target` table with one of two hook strategies:
+
+    Frame Hook:
+        target.button   (frame)    - Required (or `frame`). The UI frame to hook OnEnter/OnLeave on.
+        target.frame     (frame)    - Required (or `button`). Alternative to `button`.
+        target.onEnter   (function) - Required. Called when the mouse enters the frame.
+        target.onLeave   (function) - Optional. Called when the mouse leaves the frame. Used for cleanup (e.g., canceling async loads).
+        target.title     (string)   - Optional. If set, added as a header line before `onEnter` is called.
+
+    Function Hook:
+        target.funcName  (string)   - Required. The global function name (or method name if `table` is provided) to hook via hooksecurefunc.
+        target.func      (function) - Required. Called after the hooked function executes.
+        target.table     (table)    - Optional. If provided, hooks `table[funcName]` instead of `_G[funcName]`.
+
+    Examples:
+
+    -- Frame Hook (button):
+    Tooltip.target = {
+        button = CharacterMicroButton,
+        onEnter = function()
+            Tooltip:AddHeader("Currency:")
+        end
+    }
+
+    -- Frame Hook (frame, with onLeave):
+    Tooltip.target = {
+        frame = MainStatusTrackingBarContainer.bars[4],
+        onEnter = function()
+            Tooltip:Clear()
+            Tooltip:AddHeader("Experience:")
+        end,
+        onLeave = function()
+            SomeModule:CancelPendingWork()
+        end
+    }
+
+    -- Function Hook (global function):
+    Tooltip.target = {
+        funcName = "GameTime_UpdateTooltip",
+        func = function()
+            Tooltip:AddHeader("Daily Reset:")
+        end
+    }
+
+    -- Function Hook (table method):
+    Tooltip.target = {
+        table = GameTooltip,
+        funcName = "SetCurrencyToken",
+        func = function(_, index)
+            Tooltip:AddHeader("All Characters:")
+        end
+    }
+]]
+
 local defaults = {
     profile = {
         Enabled = {},
