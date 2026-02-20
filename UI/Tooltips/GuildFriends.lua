@@ -18,29 +18,23 @@ Tooltip.target = {
                 :SetDoubleLine(guildName or L["Guild:"], MEMBERS_FORMAT:format(numOnlineGuildMembers, numTotalGuildMembers))
                 :ToHeader()
     
-            local totalOnlineGuildFriends = GuildFriends:GetTotalOnlineFriends()
+            for friend in GuildFriends:IterableOnlineFriendsInfo() do
+                local charName = Tooltip:GetFormattedCharName(friend)
+                charName = Tooltip:GetFormattedStatus(friend, charName)
     
-            if totalOnlineGuildFriends > 0 then
-                Tooltip:AddFormattedHeader(L["Guild Friends (X):"], totalOnlineGuildFriends)
+                Tooltip:SetLine(charName)
     
-                for friend in GuildFriends:IterableOnlineFriendsInfo() do
-                    local charName = Tooltip:GetFormattedCharName(friend)
-                    charName = Tooltip:GetFormattedStatus(friend, charName)
+                if IsShiftKeyDown() and friend.zoneName then
+                    Tooltip:SetLine(friend.zoneName)
     
-                    Tooltip:SetLine(charName)
-    
-                    if IsShiftKeyDown() and friend.zoneName then
-                        Tooltip:SetLine(friend.zoneName)
-    
-                        if friend.sameZone then
-                            Tooltip:SetGreenColor()
-                        else
-                            Tooltip:SetGrayColor()
-                        end
+                    if friend.sameZone then
+                        Tooltip:SetGreenColor()
+                    else
+                        Tooltip:SetGrayColor()
                     end
-    
-                    Tooltip:ToLine()
                 end
+    
+                Tooltip:ToLine()
             end
         end
     end
