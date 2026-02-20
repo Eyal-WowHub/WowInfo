@@ -4,13 +4,19 @@ local Tooltip = addon:NewTooltip("GuildFriends", "Friends")
 
 local L = addon.L
 
+local MEMBERS_FORMAT = "|cff20ff20%d|r (|cffa0a0a0%d|r)"
+
 Tooltip.target = {
     button = GuildMicroButton,
     onEnter = function()
         local numTotalGuildMembers, numOnlineGuildMembers = GetNumGuildMembers()
     
         if numTotalGuildMembers > 0 then
-            Tooltip:AddFormattedHeader(L["X Members Y Online"], numTotalGuildMembers, numOnlineGuildMembers)
+            local guildName = GetGuildInfo("player")
+
+            Tooltip
+                :SetDoubleLine(guildName or L["Guild:"], MEMBERS_FORMAT:format(numOnlineGuildMembers, numTotalGuildMembers))
+                :ToHeader()
     
             local totalOnlineGuildFriends = GuildFriends:GetTotalOnlineFriends()
     
