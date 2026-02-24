@@ -178,8 +178,13 @@ function Friends:IterableBattleNetFriendsInfo()
                 isFavorite = accountInfo.isFavorite
 
                 characterName =  accountInfo.gameAccountInfo.characterName
+                characterLevel = nil
+                className = nil
+                grouped = false
                 zoneName =  accountInfo.gameAccountInfo.areaName
+                sameZone = false
                 realmName =  accountInfo.gameAccountInfo.realmName or ""
+                sameRealm = false
                 clientProgram = accountInfo.gameAccountInfo.clientProgram
 
                 if accountInfo.isAFK or accountInfo.gameAccountInfo.isGameAFK then

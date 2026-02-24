@@ -66,14 +66,16 @@ Tooltip.target = {
                         end
                     end
                     if friend.realmName then
-                        Tooltip:SetLine(friend.realmName):Indent()
+                        Tooltip:SetLine(friend.realmName):Indent(friend.zoneName and 0 or 6)
                         if friend.sameRealm then
                             Tooltip:SetGreenColor()
                         else
                             Tooltip:SetGrayColor()
                         end
                     end
-                    Tooltip:ToLine()
+                    if friend.zoneName or friend.realmName then
+                        Tooltip:ToLine()
+                    end
                 end
             end
         end
