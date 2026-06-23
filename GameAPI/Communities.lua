@@ -24,7 +24,18 @@ local function SortByNameAscending(a, b)
     return strcmputf8i(a.name, b.name) < 0
 end
 
+-- During chat messaging lockdown (encounters, Mythic+, rated PvP, and
+-- communication-restricted maps such as dungeons and raids) the C_Club APIs
+-- used here return secret values. Reading them while the addon is tainted
+-- raises an error, so member data is treated as unavailable and the last-known
+-- cache is kept until the restriction lifts.
+local function MembersRestricted()
+    return C_ChatInfo.InChatMessagingLockdown()
+end
+
 local function CacheCommunitiesInfo()
+    if MembersRestricted() then return end
+
     local clubs = C_Club.GetSubscribedClubs()
     if not clubs then return end
 
@@ -87,6 +98,8 @@ local function FindCommunityByClubId(clubId)
 end
 
 local function UpdateMemberPresence(clubId, memberId, presence)
+    if MembersRestricted() then return end
+
     local community = FindCommunityByClubId(clubId)
     if not community then return end
 
@@ -106,6 +119,8 @@ local function UpdateMemberPresence(clubId, memberId, presence)
 end
 
 local function UpdateClubInfo(clubId)
+    if MembersRestricted() then return end
+
     local clubInfo = C_Club.GetClubInfo(clubId)
     if not clubInfo or clubInfo.clubType ~= Enum.ClubType.Character then return end
 
@@ -164,6 +179,8 @@ Communities:RegisterEvent("CLUB_MEMBER_PRESENCE_UPDATED", function(_, _, clubId,
 end)
 
 Communities:RegisterEvent("CLUB_MEMBER_UPDATED", function(_, _, clubId, memberId)
+    if MembersRestricted() then return end
+
     local memberInfo = C_Club.GetMemberInfo(clubId, memberId)
     if memberInfo and memberInfo.presence then
         UpdateMemberPresence(clubId, memberId, memberInfo.presence)
@@ -191,6 +208,8 @@ function Communities:IterableCommunitiesInfo()
 end
 
 function Communities:IterableOnlineMembersInfo(clubId)
+    if MembersRestricted() then return function() end end
+
     local memberIds = C_Club.GetClubMembers(clubId)
     local i = 0
     local n = memberIds and #memberIds or 0
